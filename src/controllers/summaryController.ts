@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { SummaryService } from '../services/summaryService';
-import { SummaryRequest } from '../types/journal';
+import { SummaryRequest, WeeklySummaryRequest } from '../types/journal';
 
 export class SummaryController {
   private summaryService: SummaryService;
@@ -12,7 +12,6 @@ export class SummaryController {
   async createSummary(req: Request, res: Response) {
     try {
       const request: SummaryRequest = {
-        userId: req.body.userId,
         date: req.body.date,
         entries: req.body.entries
       };
@@ -25,19 +24,29 @@ export class SummaryController {
     }
   }
 
+  async createWeeklySummary(req: Request, res: Response) {
+    try {
+      const request: WeeklySummaryRequest = {
+        days: req.body.days || 7,
+        entries: req.body.entries
+      };
+
+      const summary = await this.summaryService.createWeeklySummary(request.days || 7);
+      res.status(201).json(summary);
+    } catch (error) {
+      console.error('Error creating weekly summary:', error);
+      res.status(500).json({ error: 'Failed to create weekly summary' });
+    }
+  }
+
   async getSummary(req: Request, res: Response) {
     try {
-      const { userId, date } = req.query;
-      
-      if (!userId) {
-        return res.status(400).json({ error: 'UserId is required' });
-      }
+      const {  date } = req.query;
 
       // Here you would typically fetch entries from your database
       // and then create a summary. For now, we'll return a mock response
       res.status(200).json({
         message: 'Summary retrieval endpoint',
-        userId,
         date
       });
     } catch (error) {

@@ -1,15 +1,15 @@
 export interface JournalEntry {
   id: string;
-  userId: string;
   transcript: string;
-  summary?: string;
+  summary: string;
+  startedAt: string;
   createdAt: string;
   updatedAt: string;
+  status: string;
 }
 
 export interface DailySummary {
   id: string;
-  userId: string;
   date: string;
   entries: JournalEntry[];
   summary: string;
@@ -17,8 +17,30 @@ export interface DailySummary {
   updatedAt: string;
 }
 
+export interface WeeklySummary {
+  id: string;
+  startDate: string;
+  endDate: string;
+  entries: JournalEntry[];
+  summary: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WeeklySummaryResponse {
+  startDate: string;
+  endDate: string;
+  entries: JournalEntry[];
+  summary: string;
+}
+
 export interface SummaryRequest {
-  userId: string;
-  date?: string; // Optional date for specific day summary
-  entries?: JournalEntry[]; // Optional entries to summarize
+  date?: string;
+  entries?: JournalEntry[];
+  days?: number;
+}
+
+export interface WeeklySummaryRequest {
+  days?: number;
+  entries?: JournalEntry[];
 } 
