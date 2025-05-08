@@ -12,7 +12,6 @@ export class SummaryController {
   async createSummary(req: Request, res: Response) {
     try {
       const request: SummaryRequest = {
-        date: req.body.date,
         entries: req.body.entries
       };
 
